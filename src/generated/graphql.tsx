@@ -43,7 +43,7 @@ export type Post = {
   text: Scalars['String'];
   votes: Scalars['Float'];
   creatorId: Scalars['Float'];
-  creator: User;
+  creator: Partial<User>;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
 };
