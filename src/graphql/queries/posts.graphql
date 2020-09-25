@@ -6,7 +6,10 @@ query Posts($limit:Int!,$cursor:String){
         text
         title
         createdAt
+        creator{
+          id
+          username
+      }
     }
-
   }
 }
