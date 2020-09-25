@@ -5,6 +5,7 @@ import { LogoutMutation, MeQuery, MeDocument, LoginMutation, RegisterMutation } 
 import { filter, pipe, tap } from 'wonka';
 import { Exchange } from 'urql';
 import Router from "next/router";
+import { isTypeSystemDefinitionNode } from "graphql";
 interface PaginationParams {
   cursorArgument?: string;
 
@@ -136,6 +137,13 @@ export const createUrqlClient = (ssrExchange: any) => ({
     },
     updates: {
       Mutation: {
+        createPost:(_result, args, cache, info) => {
+          const allFields = cache.inspectFields("Query")
+          const fieldInfos = allFields.filter((info) => info.fieldName==="posts")
+          fieldInfos.forEach(fi => {
+            cache.invalidate("Query","posts",fi.arguments || {})
+          })
+        },
         logout: (_result, args, cache, info) => {
           betterCacheUpdateQuery<LogoutMutation, MeQuery>(cache, { query: MeDocument }, _result, () => {
             return ({ me: null })
