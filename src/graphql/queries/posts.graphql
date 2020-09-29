@@ -5,6 +5,7 @@ query Posts($limit:Int!,$cursor:String){
         id
         text
         title
+        votes
         createdAt
         creator{
           id
